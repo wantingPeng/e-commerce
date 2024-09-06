@@ -6,13 +6,12 @@ import Shop from "./path/Shop";
 function App() {
   return (
     <>
-      <Navigation />
       <Routes>
-        {/*  <Route path="/" element={<Navigation />}> */}
-        <Route index element={<Categories />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/authentication" element={<Authentication />} />
-        {/*    </Route> */}
+        <Route path="/" element={<Navigation />}>
+          <Route index element={<Categories />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/authentication" element={<Authentication />} />
+        </Route>
       </Routes>
     </>
   );
