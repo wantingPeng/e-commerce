@@ -26,6 +26,8 @@ const SignUpForm = () => {
 
   async function handSubmit(event) {
     //generating a user doc
+    console.log("ciiiiiiiiiiiiiiiii");
+
     event.preventDefault();
     if (password !== ConfirmPassword) {
       alert("password unequal ConfirmPassword");
@@ -33,8 +35,9 @@ const SignUpForm = () => {
     } //confirm password
     try {
       // when we call firebase we might fail
+      console.log("ciiiiiiiiiiiiiiiii");
       const response = await creatUserDocFromEmailPassword(email, password); //authentication
-      /*  console.log(response);  */ //user: {displayName: null email: "wantingpeng.mia@gmail.com" uid:........}
+      console.log(response); //user: {displayName: null email: "wantingpeng.mia@gmail.com" uid:........}
       await creatUserDocFromAuth(response.user, {
         displayName,
       }); //creat User document in forestore
@@ -45,8 +48,7 @@ const SignUpForm = () => {
   }
 
   return (
-    <>
-      <div className="sign-up-container"></div>
+    <div className="sign-up-container">
       <h2>Don't have an account?</h2>
       <span>Sign up with your email and password</span>
       <form onSubmit={handSubmit}>
@@ -88,7 +90,7 @@ const SignUpForm = () => {
 
         <Button type="submit" buttonContent="sign up" buttonType=""></Button>
       </form>
-    </>
+    </div>
   );
 };
 
