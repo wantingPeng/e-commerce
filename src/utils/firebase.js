@@ -1,10 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  signInWithPopup,
-  signInWithRedirect,
-  GoogleAuthProvider,
-} from "firebase/auth"; //creat auth instance
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth"; //creat auth instance
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore"; //doc: retrieve documents inside of firestore ,getDoc: get data in document, setDoc: set date in document
 const firebaseConfig = {
