@@ -1,5 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth"; //creat auth instance
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+} from "firebase/auth"; //creat auth instance
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore"; //doc: retrieve documents inside of firestore ,getDoc: get data in document, setDoc: set date in document
 const firebaseConfig = {
@@ -30,7 +35,9 @@ export const signInWithGoogelPopup = () => signInWithPopup(auth, provider); //pa
 
 export const db = getFirestore(); //instantiated firestore, use it to access our database
 
-export const creatUserDocFromAuth = async (userAuth) => {
+export const creatUserDocFromAuth = async (userAuth, optionArgument = {}) => {
+  // set ={} just in case more addition arguments get passed in , then we can put all extra arguments in a object {} and pass in together
+  if (!userAuth) return;
   // userAuth: response from 'const response = await signInWithGoogelPopup();'
   //first if there is an existing doc reference
 
@@ -48,10 +55,17 @@ export const creatUserDocFromAuth = async (userAuth) => {
         displayName,
         email,
         creatAt, // pass those info to userDocRef
+        ...optionArgument,
       });
     } catch (error) {
       console.log("error creating the userAuth", error.message);
     }
   }
   return userDocRef; // and
+};
+
+// createUserWithEmailAndPassword: native provider
+export const creatUserDocFromEmailPassword = async (email, password) => {
+  if (!email || !password) return;
+  return await createUserWithEmailAndPassword(auth, email, password); //authentication and return a response exactlly like what returned in "logGoogelUserPopUp"
 };

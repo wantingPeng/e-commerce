@@ -1,13 +1,17 @@
 import { useState } from "react";
-
+import {
+  creatUserDocFromEmailPassword,
+  creatUserDocFromAuth,
+} from "../utils/firebase";
 const SignUpForm = () => {
-  const [formFileds, setFormFileds] = useState({
-    DisplayName: "",
+  const defaultformFileds = {
+    displayName: "",
     email: "",
     password: "",
     ConfirmPassword: "",
-  });
-  const { DisplayName, email, password, ConfirmPassword } = formFileds;
+  };
+  const [formFileds, setFormFileds] = useState(defaultformFileds);
+  const { displayName, email, password, ConfirmPassword } = formFileds;
 
   function handelChange(event) {
     const { name, value } = event.target;
@@ -16,18 +20,38 @@ const SignUpForm = () => {
   }
   console.log(formFileds);
 
+  async function handSubmit(event) {
+    //generating a user doc
+    event.preventDefault();
+    if (password !== ConfirmPassword) {
+      alert("password unequal ConfirmPassword");
+      return;
+    } //confirm password
+    try {
+      // when we call firebase we might fail
+      const response = await creatUserDocFromEmailPassword(email, password); //authentication
+      /*  console.log(response);  */ //user: {displayName: null email: "wantingpeng.mia@gmail.com" uid:........}
+      await creatUserDocFromAuth(response.user, {
+        displayName,
+      }); //creat User document in forestore
+      setFormFileds(defaultformFileds);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
   return (
     <>
       <div className="sign-up-container"></div>
       <h2>Don't have an account?</h2>
       <span>Sign up with your email and password</span>
-      <form action="">
+      <form onSubmit={handSubmit}>
         <label>Display Name</label>
         <input
           type="text"
           required
-          value={DisplayName}
-          name="DisplayName"
+          value={displayName}
+          name="displayName"
           onChange={handelChange}
         />
 
