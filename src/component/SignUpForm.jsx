@@ -4,6 +4,9 @@ import {
   creatUserDocFromAuth,
 } from "../utils/firebase";
 import Form from "./FormInput";
+import "./SignUpForm.scss";
+import Button from "./Button";
+
 const SignUpForm = () => {
   const defaultformFileds = {
     displayName: "",
@@ -83,7 +86,7 @@ const SignUpForm = () => {
           onChange={handelChange}
         />
 
-        <button type="submit">sign up</button>
+        <Button type="submit" buttonContent="sign up" buttonType=""></Button>
       </form>
     </>
   );
