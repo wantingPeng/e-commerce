@@ -5,6 +5,8 @@ import {
   signInWithRedirect,
   GoogleAuthProvider,
 } from "firebase/auth"; //creat auth instance
+
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore"; //doc: retrieve documents inside of firestore ,getDoc: get data in document, setDoc: set date in document
 const firebaseConfig = {
   apiKey: "AIzaSyB9gN0bAh_DGYxSkJWolxEHZpVkJm1iKws",
 
@@ -30,3 +32,31 @@ provider.setCustomParameters({
 
 export const auth = getAuth(); // export and creat instance of authentication // diration the lifecicle of application ,authentication represent always one person
 export const signInWithGoogelPopup = () => signInWithPopup(auth, provider); //pass auth and provider instance what we just generated
+
+export const db = getFirestore(); //instantiated firestore, use it to access our database
+
+export const creatUserDocFromAuth = async (userAuth) => {
+  // userAuth: response from 'const response = await signInWithGoogelPopup();'
+  //first if there is an existing doc reference
+
+  const userDocRef = doc(db, "User", userAuth.uid); //paramenters database, collection(name the collection),identifer(unique id )
+  const userSnapshot = await getDoc(userDocRef);
+
+  console.log(userSnapshot.exists()); // whether userDocRef in firestore exist
+  // first check if 'userDocRef' exist, if yes, return 'userDocRef', if no setDoc use  data from 'userAuth'
+  if (!userSnapshot.exists()) {
+    const { displayName, email } = userAuth;
+    const creatAt = new Date();
+
+    try {
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        creatAt, // pass those info to userDocRef
+      });
+    } catch (error) {
+      console.log("error creating the userAuth", error.message);
+    }
+  }
+  return userDocRef; // and
+};
