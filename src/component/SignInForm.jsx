@@ -52,7 +52,8 @@ const SignInForm = () => {
     <div className="sign-in-container">
       <h2>Already have an account?</h2>
       <Button
-        buttonType="google-sign-in"
+        /*         type="button"
+         */ buttonType="google-sign-in"
         onClick={logGoogelUserPopUp}
         buttonContent="sign in with googel"
       />
