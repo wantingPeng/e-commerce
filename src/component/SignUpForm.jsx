@@ -3,6 +3,7 @@ import {
   creatUserDocFromEmailPassword,
   creatUserDocFromAuth,
 } from "../utils/firebase";
+import Form from "./FormInput";
 const SignUpForm = () => {
   const defaultformFileds = {
     displayName: "",
@@ -46,8 +47,8 @@ const SignUpForm = () => {
       <h2>Don't have an account?</h2>
       <span>Sign up with your email and password</span>
       <form onSubmit={handSubmit}>
-        <label>Display Name</label>
-        <input
+        <Form
+          label="displayName"
           type="text"
           required
           value={displayName}
@@ -55,8 +56,8 @@ const SignUpForm = () => {
           onChange={handelChange}
         />
 
-        <label>Email</label>
-        <input
+        <Form
+          label="Email"
           type="email"
           required
           value={email}
@@ -64,8 +65,8 @@ const SignUpForm = () => {
           onChange={handelChange}
         />
 
-        <label>Password</label>
-        <input
+        <Form
+          label="Password"
           type="password"
           required
           value={password}
@@ -73,8 +74,8 @@ const SignUpForm = () => {
           onChange={handelChange}
         />
 
-        <label>Confirm Password</label>
-        <input
+        <Form
+          label="Confirm Password"
           type="password"
           required
           value={ConfirmPassword}
