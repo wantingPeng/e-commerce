@@ -6,7 +6,9 @@ import {
 import Form from "./FormInput";
 import "./SignUpForm.scss";
 import Button from "./Button";
-import { UserContext } from "../context/UserContext";
+
+/* import { UserContext } from "../context/UserContext"; */
+
 const SignUpForm = () => {
   const defaultformFileds = {
     displayName: "",
@@ -16,7 +18,8 @@ const SignUpForm = () => {
   };
   const [formFileds, setFormFileds] = useState(defaultformFileds);
   const { displayName, email, password, ConfirmPassword } = formFileds;
-  const { setCurrentUser } = useContext(UserContext);
+
+  /*   const { setCurrentUser } = useContext(UserContext); */
 
   function handelChange(event) {
     const { name, value } = event.target;
@@ -36,7 +39,9 @@ const SignUpForm = () => {
       // when we call firebase we might fail
       const response = await creatUserDocFromEmailPassword(email, password); //authentication
       //user: {displayName: null email: "wantingpeng.mia@gmail.com" uid:........}
-      setCurrentUser(response.user);
+
+      /*    setCurrentUser(response.user); */
+
       await creatUserDocFromAuth(response.user, {
         displayName,
       }); //creat User document in forestore

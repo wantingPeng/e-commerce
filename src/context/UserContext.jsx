@@ -22,7 +22,7 @@ export const UserContext = createContext({
 export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState("");
 
-  /* useEffect(() => {
+  useEffect(() => {
     const unsubscribe = AuthStateChangedListener((user) => {
       //The user object in the onAuthStateChanged callback is automatically provided by Firebase.
       // When you call onAuthStateChanged, Firebase listens for authentication state changes and passes the current user's information as the user argument to the callback function.
@@ -32,7 +32,7 @@ export const UserProvider = ({ children }) => {
     //which will automatically be called by React when 1. The component is unmounted (i.e., removed from the DOM)
     //2.The effect needs to run again
   }, []);
- */
+
   return (
     <UserContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}

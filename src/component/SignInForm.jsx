@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
   signInAuthUserWithEmailAndPassword,
   signInWithGoogelPopup,
@@ -7,7 +7,7 @@ import {
 import Form from "./FormInput";
 import "./SignInForm.scss";
 import Button from "./Button";
-import { UserContext } from "../context/UserContext";
+/* import { UserContext } from "../context/UserContext"; */
 
 const SignInForm = () => {
   const defaultformFileds = {
@@ -16,6 +16,7 @@ const SignInForm = () => {
   };
   const [formFileds, setFormFileds] = useState(defaultformFileds);
   const { email, password } = formFileds;
+  /*   const { setCurrentUser } = useContext(UserContext); */
 
   function handelChange(event) {
     const { name, value } = event.target;
@@ -30,11 +31,10 @@ const SignInForm = () => {
  */
     const { user } = await signInWithGoogelPopup(); // cauese we only need the uid in user obj in response
     console.log(user); //displayName,email, uid
-    setCurrentUser(user);
-
+    /*     setCurrentUser(user);
+     */
     await creatUserDocFromAuth(user); //got Userdata from firestore so awaite
   };
-  const { setCurrentUser } = useContext(UserContext);
 
   async function handSubmit(event) {
     //generating a user doc
@@ -44,8 +44,9 @@ const SignInForm = () => {
         email,
         password
       );
-      setCurrentUser(response.user);
-      console.log(response);
+      /*       setCurrentUser(response.user);
+
+ */ console.log(response);
       setFormFileds(defaultformFileds);
     } catch (error) {
       switch (error.code) {
