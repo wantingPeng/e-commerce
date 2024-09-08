@@ -30,6 +30,8 @@ const SignInForm = () => {
  */
     const { user } = await signInWithGoogelPopup(); // cauese we only need the uid in user obj in response
     console.log(user); //displayName,email, uid
+    setCurrentUser(user);
+
     await creatUserDocFromAuth(user); //got Userdata from firestore so awaite
   };
   const { setCurrentUser } = useContext(UserContext);

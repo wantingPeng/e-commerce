@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "firebase/auth"; //creat auth instance
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore"; //doc: retrieve documents inside of firestore ,getDoc: get data in document, setDoc: set date in document
@@ -77,4 +78,7 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   return await signInWithEmailAndPassword(auth, email, password); //authentication and return a response exactlly like what returned in "logGoogelUserPopUp"
 };
 
-export const SignOut = async (auth) => await signOut(auth);
+export const SignOut = async () => await signOut(auth);
+
+export const AuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback);

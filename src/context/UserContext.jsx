@@ -12,8 +12,8 @@
 //2. import { SomeContext} from Component
 //3 const value =useContext(SomeContext) */
 
-import { createContext, useState } from "react";
-
+import { createContext, useEffect, useState } from "react";
+import { AuthStateChangedListener } from "../utils/firebase";
 export const UserContext = createContext({
   setCurrentUser: () => null,
   currentUser: "",
@@ -22,6 +22,17 @@ export const UserContext = createContext({
 export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState("");
 
+  /* useEffect(() => {
+    const unsubscribe = AuthStateChangedListener((user) => {
+      //The user object in the onAuthStateChanged callback is automatically provided by Firebase.
+      // When you call onAuthStateChanged, Firebase listens for authentication state changes and passes the current user's information as the user argument to the callback function.
+      setCurrentUser(user);
+    });
+    return unsubscribe; // this is actually a function  when called, removes the listener
+    //which will automatically be called by React when 1. The component is unmounted (i.e., removed from the DOM)
+    //2.The effect needs to run again
+  }, []);
+ */
   return (
     <UserContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}
