@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   signInAuthUserWithEmailAndPassword,
   signInWithGoogelPopup,
@@ -7,6 +7,7 @@ import {
 import Form from "./FormInput";
 import "./SignInForm.scss";
 import Button from "./Button";
+import { UserContext } from "../context/UserContext";
 
 const SignInForm = () => {
   const defaultformFileds = {
@@ -31,20 +32,30 @@ const SignInForm = () => {
     console.log(user); //displayName,email, uid
     await creatUserDocFromAuth(user); //got Userdata from firestore so awaite
   };
+  const { setCurrentUser } = useContext(UserContext);
 
   async function handSubmit(event) {
     //generating a user doc
     event.preventDefault();
-
     try {
       const response = await signInAuthUserWithEmailAndPassword(
         email,
         password
       );
+      setCurrentUser(response.user);
       console.log(response);
       setFormFileds(defaultformFileds);
     } catch (error) {
-      console.error(error.message);
+      switch (error.code) {
+        case "auth/wrong-password":
+          alert("incorrect password for email");
+          break;
+        case "auth/user-not-found":
+          alert("no user associated with this email");
+          break;
+        default:
+          console.log(error);
+      }
     }
   }
 
@@ -52,8 +63,8 @@ const SignInForm = () => {
     <div className="sign-in-container">
       <h2>Already have an account?</h2>
       <Button
-        /*         type="button"
-         */ buttonType="google-sign-in"
+        type="button"
+        buttonType="google-sign-in"
         onClick={logGoogelUserPopUp}
         buttonContent="sign in with googel"
       />
