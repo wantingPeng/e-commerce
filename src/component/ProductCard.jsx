@@ -5,11 +5,10 @@ import { useContext } from "react";
 
 const ProductCard = ({ product }) => {
   const { imageUrl, name, price } = product;
-  const { setCartList, cartList } = useContext(CartContext);
+  const { addItemToCart } = useContext(CartContext);
 
   function addProductToCart() {
-    setCartList([...cartList, product]);
-    console.log(cartList);
+    addItemToCart(product);
   }
 
   return (
