@@ -3,10 +3,12 @@ import { useContext } from "react";
 
 const CheckOutItem = ({ cartItem }) => {
   const { imageUrl, name, price, quantity } = cartItem;
-  const { addItemToCart, removeCartFromItem } = useContext(CartContext);
+  const { addItemToCart, removeCartFromItem, deleteCartItem } =
+    useContext(CartContext);
 
   const increament = () => addItemToCart(cartItem);
   const decreament = () => removeCartFromItem(cartItem);
+  const deleteItem = () => deleteCartItem(cartItem);
 
   return (
     <div>
@@ -19,6 +21,9 @@ const CheckOutItem = ({ cartItem }) => {
         </div>
         <div className="arrow" onClick={increament}>
           &#10095;
+        </div>
+        <div className="remove-button" onClick={deleteItem}>
+          &#10005;
         </div>
       </div>
     </div>
