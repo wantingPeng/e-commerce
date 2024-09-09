@@ -6,6 +6,7 @@ export const CartContext = createContext({
   cartList: [],
   addItemToCart: () => {},
   cartItemCount: 0,
+  removeCartFromItem: () => {},
 });
 
 function addCartItem(cartList, product) {
@@ -23,6 +24,14 @@ function addCartItem(cartList, product) {
   return [...cartList, { ...product, quantity: 1 }]; //append list
 }
 
+function removeCartItem(cartList, product) {
+  console.log(cartList);
+  return cartList.map((cartItem) =>
+    cartItem.id === product.id
+      ? { ...cartItem, quantity: cartItem.quantity - 1 } //correct list
+      : cartItem
+  );
+}
 export const CartProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartList, setCartList] = useState([]);
@@ -36,9 +45,11 @@ export const CartProvider = ({ children }) => {
     setCartItemCount(count);
   }, [cartList]);
 
-  const addItemToCart = (
-    product //pass product in there
-  ) => setCartList(addCartItem(cartList, product));
+  const addItemToCart = (product) =>
+    setCartList(addCartItem(cartList, product));
+
+  const removeCartFromItem = (product) =>
+    setCartList(removeCartItem(cartList, product));
 
   return (
     <CartContext.Provider
@@ -48,6 +59,7 @@ export const CartProvider = ({ children }) => {
         cartList,
         addItemToCart,
         cartItemCount,
+        removeCartFromItem,
       }}
     >
       {children}
