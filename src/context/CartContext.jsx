@@ -40,13 +40,24 @@ export const CartProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartList, setCartList] = useState([]);
   const [cartItemCount, setCartItemCount] = useState(0);
-
+  const [total, setTotal] = useState(0);
+  //the above 3 func, request click, ususlly be wrote as func to got called,
+  //the below 2 useEffect, quantify in icon and total, got changed automaticlly after render(dependence state chenage)
   useEffect(() => {
     const count = cartList.reduce(
       (accumulate, current) => accumulate + current.quantity,
       0
     );
     setCartItemCount(count);
+  }, [cartList]);
+
+  useEffect(() => {
+    const total = cartList.reduce(
+      (accumulate, current) => accumulate + current.price * current.quantity,
+      0
+    );
+
+    setTotal(total);
   }, [cartList]);
 
   const addItemToCart = (product) =>
@@ -66,6 +77,7 @@ export const CartProvider = ({ children }) => {
         cartItemCount,
         removeCartFromItem,
         deleteCartItem,
+        total,
       }}
     >
       {children}
