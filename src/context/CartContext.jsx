@@ -1,10 +1,11 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const CartContext = createContext({
   isCartOpen: false,
   setIsOpen: () => {},
   cartList: [],
   addItemToCart: () => {},
+  cartItemCount: 0,
 });
 
 function addCartItem(cartList, product) {
@@ -25,6 +26,15 @@ function addCartItem(cartList, product) {
 export const CartProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartList, setCartList] = useState([]);
+  const [cartItemCount, setCartItemCount] = useState(0);
+
+  useEffect(() => {
+    const count = cartList.reduce(
+      (accumulate, current) => accumulate + current.quantity,
+      0
+    );
+    setCartItemCount(count);
+  }, [cartList]);
 
   const addItemToCart = (
     product //pass product in there
@@ -32,7 +42,13 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ isCartOpen, setIsCartOpen, cartList, addItemToCart }}
+      value={{
+        isCartOpen,
+        setIsCartOpen,
+        cartList,
+        addItemToCart,
+        cartItemCount,
+      }}
     >
       {children}
     </CartContext.Provider>
