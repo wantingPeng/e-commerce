@@ -1,13 +1,15 @@
 import { createContext, useEffect, useState } from "react";
-import PRODUCTS from "../shop-data.json";
+import PRODUCTS from "../AllShopData";
+import { addCollectionAndDoc } from "../utils/firebase";
 
 export const ProductsContext = createContext({
   PRODUCTS: [],
-  product: "",
 });
 export const ProductsProvider = ({ children }) => {
-  const [products, setProducts] = useState(PRODUCTS);
-
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    addCollectionAndDoc("categorise", PRODUCTS); //(customize name of collecIdentifer, pass objects,what's we want to add in firestore)
+  }, []);
   return (
     <ProductsContext.Provider value={{ products, setProducts }}>
       {children}

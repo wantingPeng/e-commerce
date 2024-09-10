@@ -9,7 +9,14 @@ import {
   onAuthStateChanged,
 } from "firebase/auth"; //creat auth instance
 
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore"; //doc: retrieve documents inside of firestore ,getDoc: get data in document, setDoc: set date in document
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+} from "firebase/firestore"; //doc: retrieve documents inside of firestore ,getDoc: get data in document, setDoc: set date in document
 const firebaseConfig = {
   apiKey: "AIzaSyB9gN0bAh_DGYxSkJWolxEHZpVkJm1iKws",
 
@@ -82,3 +89,18 @@ export const SignOut = async () => await signOut(auth);
 
 export const AuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+export const addCollectionAndDoc = async (collecIdentifer, objects) => {
+  //object:data object, which we want to add
+
+  const collecRef = collection(db, collecIdentifer); //goal:store objects in collecReferance as a new doc
+  const batch = writeBatch(db); // group multiple write operations (like set, update, or delete) into a single atomic operation.
+  //here we'll creat a bunch of creat events, cause each of object like, i want you to creat and set me to into collectionReferance as a new doc
+  objects.forEach((object) => {
+    //for each of objects i want you to batch a set for me
+    const docRef = doc(collecRef, object.title.toLowerCase()); //firestore point out a place, where we can store the unique object. like above userDocRef, but here instead of db, we already have collectionReferance,and the later stand for still unique identifer
+    batch.set(docRef, object); // set data of object in location of docRef
+  });
+  await batch.commit(); // Commits the batch, applying all the operations atomically. If any operation fails, none of them will be applied.
+  console.log("done");
+};
