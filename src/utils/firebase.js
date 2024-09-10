@@ -16,6 +16,8 @@ import {
   setDoc,
   collection,
   writeBatch,
+  query,
+  getDocs,
 } from "firebase/firestore"; //doc: retrieve documents inside of firestore ,getDoc: get data in document, setDoc: set date in document
 const firebaseConfig = {
   apiKey: "AIzaSyB9gN0bAh_DGYxSkJWolxEHZpVkJm1iKws",
@@ -103,4 +105,17 @@ export const addCollectionAndDoc = async (collecIdentifer, objects) => {
   });
   await batch.commit(); // Commits the batch, applying all the operations atomically. If any operation fails, none of them will be applied.
   console.log("done");
+};
+export const getCollectionAndDocFromDB = async (collecIdentifer) => {
+  const collecRef = collection(db, collecIdentifer); //hot the collecReference of collection
+  const q = query(collecRef); //create a query by specifying the collection, which want to be queried
+  const querySnapshot = await getDocs(q); // Executes the query and retrieves the documents.
+  console.log(querySnapshot.docs.map((obj) => obj.data())); //!!!!!Array(5) [ {…}, {…}, {…}, {…}, {…} ] in {}:items and title
+  const collectionObject = querySnapshot.docs.reduce((acc, current) => {
+    const { title, items } = current.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+  console.log(collectionObject);
+  return collectionObject;
 };
