@@ -9,7 +9,14 @@ export const CartContext = createContext({
   cartItemCount: 0,
   removeCartFromItem: () => {},
   deleteCartItem: () => {},
+  total: 0,
 });
+const INITIAL_STATE = {
+  isCartOpen: false,
+  cartList: [],
+  cartItemCount: 0,
+  total: 0,
+};
 
 function addCartItem(cartList, product) {
   const existingCartItem = cartList.find(
