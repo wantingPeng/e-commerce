@@ -1,8 +1,9 @@
-import { createContext, useEffect, useState } from "react";
+import { type } from "@testing-library/user-event/dist/type";
+import { createContext, useReducer } from "react";
 
 export const CartContext = createContext({
   isCartOpen: false,
-  setIsOpen: () => {},
+  setIsCartOpen: () => {},
   cartList: [],
   addItemToCart: () => {},
   cartItemCount: 0,
@@ -36,37 +37,80 @@ function clearItem(cartList, product) {
   return cartList.filter((cartItem) => cartItem.id !== product.id);
 }
 
-export const CartProvider = ({ children }) => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartList, setCartList] = useState([]);
-  const [cartItemCount, setCartItemCount] = useState(0);
-  const [total, setTotal] = useState(0);
-  //the above 3 func, request click, ususlly be wrote as func to got called,
-  //the below 2 useEffect, quantify in icon and total, got changed automaticlly after render(dependence state chenage)
-  useEffect(() => {
-    const count = cartList.reduce(
-      (accumulate, current) => accumulate + current.quantity,
-      0
-    );
-    setCartItemCount(count);
-  }, [cartList]);
+const INITIAL_STATE = {
+  isCartOpen: false,
+  cartList: [],
+  cartItemCount: 0,
+  total: 0,
+};
+const CART_ACTION_TYPES = {
+  SET_IS_CART_OPEN: "SET_IS_CART_OPEN",
+  SET_CART_ITEMS: "SET_CART_ITEMS",
+  SET_CART_COUNT: "SET_CART_COUNT",
+  SET_CART_TOTAL: "SET_CART_TOTAL",
+};
 
-  useEffect(() => {
-    const total = cartList.reduce(
+const cartReducer = (state, action) => {
+  //reducer: A function that determines the next state based on the current state and the action dispatched.
+  const { type, payload } = action;
+
+  switch (type) {
+    case CART_ACTION_TYPES.SET_CART_ITEMS:
+      return {
+        ...state, //pass isCartOpen
+        ...payload, //pass cartList cartItemCount total
+      };
+    case CART_ACTION_TYPES.SET_IS_CART_OPEN:
+      return {
+        ...state, //pass cartList cartItemCount total
+        isCartOpen: payload, //pass isCartOpen
+      };
+    default:
+      throw new Error(`Unhandled type ${type} in cartReducer`);
+  }
+};
+
+export const CartProvider = ({ children }) => {
+  /*   const [state, dispatch] = useReducer();
+   */
+  const [{ isCartOpen, cartList, cartItemCount, total }, dispatch] = useReducer(
+    cartReducer,
+    INITIAL_STATE
+  );
+
+  const updateCartItemsReducer = (newCartList) => {
+    const NewCount = newCartList.reduce((accumulate, current) => {
+      return accumulate + current.quantity;
+    }, 0);
+
+    const newTotal = newCartList.reduce(
       (accumulate, current) => accumulate + current.price * current.quantity,
       0
     );
-
-    setTotal(total);
-  }, [cartList]);
+    dispatch({
+      //dispatch: A function that you call to send an action to the reducer.
+      type: CART_ACTION_TYPES.SET_CART_ITEMS,
+      payload: {
+        cartList: newCartList,
+        cartItemCount: NewCount,
+        total: newTotal,
+      },
+    });
+  };
 
   const addItemToCart = (product) =>
-    setCartList(addCartItem(cartList, product));
+    updateCartItemsReducer(addCartItem(cartList, product));
 
   const removeCartFromItem = (product) =>
-    setCartList(removeCartItem(cartList, product));
+    updateCartItemsReducer(removeCartItem(cartList, product));
 
-  const deleteCartItem = (product) => setCartList(clearItem(cartList, product));
+  const deleteCartItem = (product) =>
+    updateCartItemsReducer(clearItem(cartList, product));
+
+  const setIsCartOpen = (cartState) => {
+    dispatch({ type: CART_ACTION_TYPES.SET_IS_CART_OPEN, payload: cartState }); //dispatch: A function that you call to send an action to the reducer.
+  };
+
   return (
     <CartContext.Provider
       value={{
