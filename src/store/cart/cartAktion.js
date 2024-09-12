@@ -33,7 +33,10 @@ function clearItem(cartList, product) {
 
 export const addItemToCart = (cartList, product) => {
   const updateCartItems = addCartItem(cartList, product);
-  return { type: CART_ACTION_TYPES.SET_CART_ITEMS, payload: updateCartItems }; //or payload: {cartList:updateCartItems} then we can use ...payload in cartreducer.js
+  return {
+    type: CART_ACTION_TYPES.SET_CART_ITEMS,
+    payload: { cartList: updateCartItems },
+  }; //or payload: {cartList:updateCartItems} then we can use ...payload in cartreducer.js
 };
 
 export const removeCartFromItem = (cartList, product) => {

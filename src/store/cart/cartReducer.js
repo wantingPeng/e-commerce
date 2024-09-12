@@ -15,7 +15,8 @@ export const cartReducer = (state = INITIAL_STATE, action) => {
     case CART_ACTION_TYPES.SET_CART_ITEMS:
       return {
         ...state, //pass isCartOpen
-        cartList: payload, //pass cartList cartItemCount total
+        ...payload,
+        /* cartList: payload, */ //pass cartList cartItemCount total
       };
     case CART_ACTION_TYPES.SET_IS_CART_OPEN:
       return {
