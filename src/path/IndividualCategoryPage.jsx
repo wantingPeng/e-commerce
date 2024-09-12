@@ -1,12 +1,14 @@
 import ProductCard from "../component/ProductCard";
-import { CategoriesContext } from "../context/CategoriesContext";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./IndividualCategoryPage.scss";
+import { selectCategories } from "../store/Categories/CategoriesSelector";
+import { useSelector } from "react-redux";
 
 const IndividualCategoryPage = () => {
+  const Categories = useSelector(selectCategories);
+
   const { title } = useParams();
-  const { Categories } = useContext(CategoriesContext);
   const [products, setProducts] = useState(Categories[title]); //products's default is {} not undefined
   /*   const products = Categories[title];
    */
