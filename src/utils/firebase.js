@@ -110,12 +110,8 @@ export const getCollectionAndDocFromDB = async (collecIdentifer) => {
   const collecRef = collection(db, collecIdentifer); //hot the collecReference of collection
   const q = query(collecRef); //create a query by specifying the collection, which want to be queried
   const querySnapshot = await getDocs(q); // Executes the query and retrieves the documents.
-  console.log(querySnapshot.docs.map((obj) => obj.data())); //!!!!!Array(5) [ {…}, {…}, {…}, {…}, {…} ] in {}:items and title
-  const collectionObject = querySnapshot.docs.reduce((acc, current) => {
-    const { title, items } = current.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
-  console.log(collectionObject);
-  return collectionObject;
+  const collectionArray = querySnapshot.docs.map((obj) => obj.data()); //!!!!!Array(5) [ {…}, {…}, {…}, {…}, {…} ] in {}:items and title
+  console.log(collectionArray);
+
+  return collectionArray;
 };
