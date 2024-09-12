@@ -7,8 +7,10 @@ import { SignOut } from "../utils/firebase";
 import CartIcon from "../component/CartIcon";
 import CartDropDown from "../component/CartDropDown";
 import { CartContext } from "../context/CartContext";
+import { useSelector } from "react-redux";
+import { SelctorCurrentUser } from "../store/user/selector";
 const Navigation = () => {
-  const { currentUser } = useContext(UserContext);
+  const currentUser = useSelector(SelctorCurrentUser); //pull out correspond state out from state tree in store
   const { isCartOpen } = useContext(CartContext);
   async function handleSignOut() {
     await SignOut();
