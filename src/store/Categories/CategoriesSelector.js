@@ -7,6 +7,7 @@ export const selectCategories = createSelector(
     categories //categories:come from selectCategoriesReducer, it only run , when selectCategoriesReducer is different
   ) => {
     return categories.reduce((acc, current) => {
+      //applies the logic to the data the first time and after changing, how to process data
       const { title, items } = current;
       acc[title.toLowerCase()] = items;
       return acc;
