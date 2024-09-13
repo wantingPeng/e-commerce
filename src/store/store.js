@@ -11,7 +11,7 @@ const persistConfig = {
 };
 const PersistReducer = persistReducer(persistConfig, rootReducer); // (config, reducer)  returns an enhanced reducer
 
-const middlewares = [logger]; //catch actions before they hit our reducer and they log out the state
+const middlewares = [process.env.NODE_ENV!=='production' && logger].filter(Boolean); //catch actions before they hit our reducer and they log out the state
 const composedEnhance = compose(applyMiddleware(...middlewares));
 
 export const store = legacy_createStore(
@@ -20,3 +20,7 @@ export const store = legacy_createStore(
   composedEnhance
 );
 export const persistor = persistStore(store); //returns persistor object
+
+
+[2===3 && {A:'STRING'}].filter(Boolean) return []
+[3===3 && {A:'STRING'}].filter(Boolean) return [{A:'STRING'}]
