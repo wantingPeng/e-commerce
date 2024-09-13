@@ -1,0 +1,88 @@
+In Redux (and functional programming in general), a side effect occurs when a function interacts with or depends on something outside of its scope or causes an observable change outside the function's execution. An API call qualifies as a side effect for several reasons:
+
+1. Non-Deterministic Behavior
+
+API calls introduce non-determinism because their outcome depends on external factors (e.g., network status, server response times, authentication). A pure function, like a Redux reducer, should always produce the same output given the same input, but an API call can have unpredictable outcomes:
+
+    Network latency might cause delays or failures.
+    The server could return different data over time.
+    The server might be unavailable, resulting in an error.
+
+Thus, embedding an API call inside a reducer could cause the reducer to behave differently for the same input, breaking its predictability.
+Example:
+const reducer = (state, action) => {
+switch (action.type) {
+case 'FETCH_DATA':
+// ❌ Side effect: API call inside reducer
+fetch('/api/data').then(response => response.json()).then(data => {
+// Updating state based on data is an observable side effect
+});
+return state; // Not a pure function anymore
+default:
+return state;
+}
+};
+The issue here is that the fetch call will have unpredictable outcomes based on external conditions, making the reducer non-deterministic. 2. Asynchronous Nature
+
+API calls are typically asynchronous. Redux reducers are synchronous functions, meaning they expect to return the next state immediately after an action is dispatched. Since an API call might take time to resolve, the reducer wouldn't have the data it needs to calculate the next state immediately. This breaks the Redux flow, where each action dispatch is supposed to lead directly to a new state.
+const reducer = (state, action) => {
+switch (action.type) {
+case 'FETCH_DATA':
+// ❌ Side effect: API call returns a promise
+const data = fetch('/api/data').then(response => response.json());
+// Reducer cannot wait for the asynchronous call to finish
+return { ...state, data }; // The data will be undefined or incomplete
+default:
+return state;
+}
+};
+In this case, the reducer can't handle the asynchronous behavior and will likely return incorrect or incomplete state. 3. State Mutability
+
+API calls may modify some external state, such as a database or server, without directly impacting the Redux store. Since reducers are supposed to be pure functions, they should not trigger side effects like making API requests that could modify external state, such as saving data or updating records in a backend system.
+
+If a reducer starts modifying external state via an API call, it becomes impure and less predictable.
+Why We Should Avoid API Calls in Reducers
+
+    Purity: Reducers are pure functions and should only depend on their input (current state and action) to produce a new state.
+    Predictability: Since API calls can fail or return different data at different times, their results are unpredictable, making reducers unpredictable.
+    Immutability: API calls may mutate state outside of Redux's control, breaking the functional programming principles Redux relies on.
+
+Handling API Calls the Right Way: Using Middleware
+
+Instead of making API calls inside reducers, it's better to handle them through middleware (like Redux Thunk or Redux Saga). Middleware can handle the side effect (the API call) and dispatch the relevant actions once the data is received, leaving reducers to remain pure.
+Example with Redux Thunk:
+// Action creator with side effect (API call)
+const fetchData = () => {
+return async (dispatch) => {
+dispatch({ type: 'FETCH_DATA_REQUEST' });
+
+    try {
+      const response = await fetch('/api/data');
+      const data = await response.json();
+      dispatch({ type: 'FETCH_DATA_SUCCESS', payload: data });
+    } catch (error) {
+      dispatch({ type: 'FETCH_DATA_FAILURE', error });
+    }
+
+};
+};
+
+// Reducer stays pure, only handling dispatched actions
+const reducer = (state, action) => {
+switch (action.type) {
+case 'FETCH_DATA_REQUEST':
+return { ...state, loading: true };
+case 'FETCH_DATA_SUCCESS':
+return { ...state, loading: false, data: action.payload };
+case 'FETCH_DATA_FAILURE':
+return { ...state, loading: false, error: action.error };
+default:
+return state;
+}
+};
+In this example, the side effect (the API call) is moved to the action creator with the help of Redux Thunk. The reducer itself remains a pure function that only updates the state based on the action dispatched.
+Summary:
+
+    API calls cause side effects because they introduce unpredictability, depend on external systems, and are often asynchronous.
+    Reducers must remain pure, meaning no side effects like API calls should occur in them.
+    Use middleware (like Redux Thunk or Redux Saga) to handle API calls, ensuring the Redux flow remains predictable and testable.

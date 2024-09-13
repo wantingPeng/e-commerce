@@ -1,8 +1,8 @@
-import { compose, legacy_createStore, applyMiddleware } from "redux";
+/* import { compose, legacy_createStore, applyMiddleware } from "redux";
 import logger from "redux-logger";
 import { rootReducer } from "./rootReducer";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; //Storage Engines: localStorage
+import storage from "redux-persist/lib/storage"; //Storage Engines: localStorage 
 
 const persistConfig = {
   key: "root",
@@ -21,4 +21,15 @@ export const store = legacy_createStore(
   undefined,
   composedEnhance
 );
-export const persistor = persistStore(store); //returns persistor object
+export const persistor = persistStore(store); //returns persistor object*/
+
+import { configureStore } from "@reduxjs/toolkit";
+import { rootReducer } from "./rootReducer";
+
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+});

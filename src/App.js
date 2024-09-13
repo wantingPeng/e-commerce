@@ -8,13 +8,13 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { AuthStateChangedListener } from "./utils/firebase";
 
-import { Action } from "./store/user/action";
+import { setCurrentUser } from "./store/user/userReducer";
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     const unsubscribe = AuthStateChangedListener((user) => {
-      dispatch(Action(user));
+      dispatch(setCurrentUser(user));
     });
     return unsubscribe;
   }, [dispatch]); //warning: cause we generate const dispatch outside, and apply dispatch in useEffect,
