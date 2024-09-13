@@ -8,7 +8,7 @@ const Shop = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchCategoriesAsync());
+    dispatch(fetchCategoriesAsync()); //// Dispatch the thunk action when the component mounts
   }, []);
 
   return (

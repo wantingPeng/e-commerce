@@ -1,18 +1,24 @@
 import { createSelector } from "reselect";
 
-const selectCategoriesReducer = (state) => state.Categories.categories; //get the target data from store tree, then we can process data later
+const selectCategoriesReducer = (state) => state.Categories; //get the target data from store tree, then we can process data later
+
 export const selectCategories = createSelector(
   [selectCategoriesReducer],
   (
-    categories //categories:come from selectCategoriesReducer, it only run , when selectCategoriesReducer is different
+    Categories //categories:come from selectCategoriesReducer, it only run , when selectCategoriesReducer is different
   ) => {
-    return categories.reduce((acc, current) => {
+    return Categories.categories.reduce((acc, current) => {
       //applies the logic to the data the first time and after changing, how to process data
       const { title, items } = current;
       acc[title.toLowerCase()] = items;
       return acc;
     }, {});
   }
+);
+
+export const selectIsLoading = createSelector(
+  [selectCategoriesReducer],
+  (Categories) => Categories.isLosding //got return
 );
 
 /* export const selectCategories = (state) => {

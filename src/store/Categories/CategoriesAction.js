@@ -13,8 +13,9 @@ export const fetchCategoriesFailed = (error) => ({
   payload: error,
 });
 // Thunk action creator
-//fetchCategoriesAsync return this thunk function
+
 export const fetchCategoriesAsync = () => async (dispatch) => {
+  //fetchCategoriesAsync return this thunk function
   dispatch(fetchCategoriesStart());
   try {
     const collectionData = await getCollectionAndDocFromDB("categorise");
