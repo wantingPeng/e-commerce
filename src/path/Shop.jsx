@@ -15,7 +15,7 @@ const Shop = () => {
       dispatch(setCategories(collectionData));
     };
     getCategorise();
-  }, []);
+  }, [dispatch]);
 
   return (
     <Routes>
