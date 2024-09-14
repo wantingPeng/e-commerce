@@ -1,6 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import { userReducer } from "./user/userReducer";
-import CategoriesReducer from "./Categories/CategoriesReducer";
+import { CategoriesReducer } from "./Categories/CategoriesReducer";
 import { cartReducer } from "./cart/cartReducer";
 
 //root reducer,creat a final reducer by combining smaller reducer together

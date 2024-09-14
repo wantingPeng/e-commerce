@@ -3,7 +3,7 @@ import IndividualCategoryPage from "./IndividualCategoryPage";
 import CategoriesPreviewPage from "./CategoriesPreviewPage";
 import { getCollectionAndDocFromDB } from "../utils/firebase";
 import { useEffect } from "react";
-import { categoriesAction } from "../store/Categories/CategoriesAction";
+import { setCategories } from "../store/Categories/CategoriesReducer";
 import { useDispatch } from "react-redux";
 const Shop = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const Shop = () => {
     const getCategorise = async () => {
       //!!!!!!!!!when we use a async func inside useEffect, we don't actually just just put async after useEffect,instead creat a new async func
       const collectionData = await getCollectionAndDocFromDB("categorise");
-      dispatch(categoriesAction(collectionData));
+      dispatch(setCategories(collectionData));
     };
     getCategorise();
   }, []);

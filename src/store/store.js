@@ -28,7 +28,9 @@ import { rootReducer } from "./rootReducer";
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: (
+    getDefaultMiddleware //default is thunk middleware
+  ) =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),
