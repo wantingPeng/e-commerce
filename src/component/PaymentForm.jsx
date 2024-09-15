@@ -2,49 +2,46 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import Button from "./Button";
 import { PaymentFormContainer, FormContainer } from "./PaymentForm.style";
 import { StripeCardElement } from "@stripe/stripe-js";
+
 const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
 
   const paymentHandler = async (e) => {
     e.preventDefault();
-    try {
-      if (!stripe || !elements) return;
-      const response = await fetch("/.netlify/functions/funcPaymentIntent", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ amount: 10000 }),
-      }).then((response) => response.json());
-      console.log(response);
-      console.log("ssssssssssssssssssss");
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
-  /* const PaymentForm = () => {
-  const stripe = useStripe();
-  const elements = useElements();
-
-  const paymentHandler = async (e) => {
-    e.preventDefault();
-
-    if (!stripe || !elements) {
-      return;
-    }
-
+    if (!stripe || !elements) return;
     const response = await fetch("/.netlify/functions/funcPaymentIntent", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ amount: 100 }),
-    }).then((res) => res.json());
+      body: JSON.stringify({ amount: 3000 }),
+    }).then((response) => response.json());
     console.log(response);
-    console.log("ssssssssssssssssssss");
-  }; */
+    const {
+      paymentIntent: { client_secret },
+    } = response;
+    const paymentResult = await stripe.confirmCardPayment(client_secret, {
+      payment_method: {
+        card: elements.getElement(CardElement), //component for securely collecting payment details
+        billing_details: {
+          name: "cici",
+        },
+      },
+    });
+
+    if (paymentResult.error) {
+      console.log("ffffffffffffff");
+
+      alert(paymentResult.error);
+    } else {
+      if (paymentResult.paymentIntent.status === "succeeded") {
+        console.log("sssssssssssssss");
+        alert("Success! Payment received.");
+      }
+    }
+  };
 
   return (
     <PaymentFormContainer>
