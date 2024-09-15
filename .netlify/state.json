@@ -1,0 +1,19 @@
+{
+	"geolocation": {
+		"data": {
+			"city": "Nuremberg",
+			"country": {
+				"code": "DE",
+				"name": "Germany"
+			},
+			"subdivision": {
+				"code": "BY",
+				"name": "Bavaria"
+			},
+			"timezone": "Europe/Berlin",
+			"latitude": 49.4349,
+			"longitude": 11.1046
+		},
+		"timestamp": 1726418987332
+	}
+}
