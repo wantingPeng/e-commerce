@@ -7,8 +7,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  User,
+  NextOrObserver,
 } from "firebase/auth"; //creat auth instance
-
 import {
   getFirestore,
   doc,
@@ -18,8 +19,11 @@ import {
   writeBatch,
   query,
   getDocs,
+  QueryDocumentSnapshot,
 } from "firebase/firestore"; //doc: retrieve documents inside of firestore ,getDoc: get data in document, setDoc: set date in document
-import { CartItem } from "./cartType";
+import { Category } from "../store/Categories/CategoriesType";
+import { PromiseOr } from "sass";
+import { promises } from "dns";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB9gN0bAh_DGYxSkJWolxEHZpVkJm1iKws",
@@ -49,7 +53,20 @@ export const signInWithGoogelPopup = () => signInWithPopup(auth, provider); //pa
 
 export const db = getFirestore(); //instantiated firestore, use it to access our database
 
-export const creatUserDocFromAuth = async (userAuth, optionArgument = {}) => {
+export type optionArgument = {
+  displayName?: string;
+};
+export type UserData = {
+  displayName: string;
+  email: string;
+  creatAt: Date;
+};
+// because in this function here we return userDocRef, so we wanna define the type of it here
+export const creatUserDocFromAuth = async (
+  userAuth: User,
+  optionArgument = {} as optionArgument
+): Promise<void | QueryDocumentSnapshot<UserData>> => {
+  //"userAuth :User," type defined by firebase, we import from above
   // set ={} just in case more addition arguments get passed in , then we can put all extra arguments in a object {} and pass in together
   if (!userAuth) return;
   // userAuth: response from 'const response = await signInWithGoogelPopup();'
@@ -75,23 +92,29 @@ export const creatUserDocFromAuth = async (userAuth, optionArgument = {}) => {
       console.log("error creating the userAuth", error.message);
     }
   }
-  return userDocRef; // and
+  return userSnapshot as QueryDocumentSnapshot<UserData>;
 };
 
 // createUserWithEmailAndPassword: native provider
-export const creatUserDocFromEmailPassword = async (email, password) => {
+export const creatUserDocFromEmailPassword = async (
+  email: string,
+  password: string
+) => {
   if (!email || !password) return;
   return await createUserWithEmailAndPassword(auth, email, password); //authentication and return a response exactlly like what returned in "logGoogelUserPopUp"
 };
 
-export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+export const signInAuthUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
   if (!email || !password) return;
   return await signInWithEmailAndPassword(auth, email, password); //authentication and return a response exactlly like what returned in "logGoogelUserPopUp"
 };
 
 export const SignOut = async () => await signOut(auth);
 
-export const AuthStateChangedListener = (callback) =>
+export const AuthStateChangedListener = (callback: NextOrObserver<User>) =>
   onAuthStateChanged(auth, callback);
 
 export type objects = {
@@ -115,11 +138,15 @@ export const addCollectionAndDoc = async <T extends objects>(
   await batch.commit(); // Commits the batch, applying all the operations atomically. If any operation fails, none of them will be applied.
   console.log("done");
 };
-export const getCollectionAndDocFromDB = async (collecIdentifer) => {
+export const getCollectionAndDocFromDB = async (
+  collecIdentifer: string
+): Promise<Category[]> => {
   const collecRef = collection(db, collecIdentifer); //hot the collecReference of collection
   const q = query(collecRef); //create a query by specifying the collection, which want to be queried
   const querySnapshot = await getDocs(q); // Executes the query and retrieves the documents.
-  const collectionArray = querySnapshot.docs.map((obj) => obj.data()); //!!!!!Array(5) [ {…}, {…}, {…}, {…}, {…} ] in {}:items and title
+  const collectionArray = querySnapshot.docs.map(
+    (obj) => obj.data() as Category
+  ); //!!!!!Array(5) [ {…}, {…}, {…}, {…}, {…} ] in {}:items and title
   console.log(collectionArray);
 
   return collectionArray;
