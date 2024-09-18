@@ -1,6 +1,7 @@
 import { createSelector } from "reselect";
+import { CategoriesState } from "./CategoriesReducer";
 
-const selectCategoriesReducer = (state) => state.Categories; //get the target data from store tree, then we can process data later
+const selectCategoriesReducer = (state): CategoriesState => state.Categories; //get the target data from store tree, then we can process data later
 
 export const selectCategories = createSelector(
   [selectCategoriesReducer],
@@ -18,7 +19,7 @@ export const selectCategories = createSelector(
 
 export const selectIsLoading = createSelector(
   [selectCategoriesReducer],
-  (Categories) => Categories.isLosding //got return
+  (Categories) => Categories.isLoading //got return
 );
 
 /* export const selectCategories = (state) => {

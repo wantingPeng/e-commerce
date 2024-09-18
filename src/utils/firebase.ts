@@ -19,6 +19,8 @@ import {
   query,
   getDocs,
 } from "firebase/firestore"; //doc: retrieve documents inside of firestore ,getDoc: get data in document, setDoc: set date in document
+import { CartItem } from "./cartType";
+
 const firebaseConfig = {
   apiKey: "AIzaSyB9gN0bAh_DGYxSkJWolxEHZpVkJm1iKws",
 
@@ -92,7 +94,14 @@ export const SignOut = async () => await signOut(auth);
 export const AuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
 
-export const addCollectionAndDoc = async (collecIdentifer, objects) => {
+export type objects = {
+  title: string;
+};
+//objects can be random type, we don't right now, so we spply generic, the only we konw for sure is type title
+export const addCollectionAndDoc = async <T extends objects>(
+  collecIdentifer: string,
+  objects: T[]
+) => {
   //object:data object, which we want to add
 
   const collecRef = collection(db, collecIdentifer); //goal:store objects in collecReferance as a new doc
