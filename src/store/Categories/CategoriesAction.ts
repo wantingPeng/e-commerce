@@ -6,7 +6,7 @@ import {
   ActionWithPayload,
   withMatcher,
 } from "../CreatAction";
-
+import { Dispatch } from "redux";
 export type FetchCategoriesStart =
   Action<CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START>;
 
@@ -39,7 +39,7 @@ export const fetchCategoriesFailed = withMatcher(
 );
 // Thunk action creatorZ
 
-export const fetchCategoriesAsync = () => async (dispatch) => {
+export const fetchCategoriesAsync = () => async (dispatch: Dispatch) => {
   //fetchCategoriesAsync return this thunk function
   dispatch(fetchCategoriesStart());
   try {

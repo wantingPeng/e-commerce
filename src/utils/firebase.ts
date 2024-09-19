@@ -89,7 +89,7 @@ export const creatUserDocFromAuth = async (
         ...optionArgument,
       });
     } catch (error) {
-      console.log("error creating the userAuth", error.message);
+      console.log("error creating the userAuth", error);
     }
   }
   return userSnapshot as QueryDocumentSnapshot<UserData>;

@@ -1,35 +1,33 @@
-import { CART_ACTION_TYPES,CartItem } from "./cartType";
+import { CART_ACTION_TYPES, CartItem } from "./cartType";
 import { setIsCartOpen, setCartItems } from "./cartAktion";
 import { UnknownAction } from "redux";
-}
+
 export type CartState = {
   isCartOpen: boolean;
   cartList: CartItem[];
 };
 
-
-const INITIAL_STATE:CartState = {
+const INITIAL_STATE: CartState = {
   isCartOpen: false,
   cartList: [],
 };
 
-export const cartReducer = (state = INITIAL_STATE, action:UnknownAction) => {
+export const cartReducer = (state = INITIAL_STATE, action: UnknownAction) => {
   //reducer: A function that determines the next state based on the current state and the action dispatched.
-if (setCartItems.match(action)){
-  return {
-    ...state, //pass isCartOpen
-    ...action.Payload };
-}
-if (setIsCartOpen.match(action)){
-  return {
-    ...state, //pass cartList cartItemCount total
-    isCartOpen: action.Payload, //pass isCartOpen
-  };
-
- 
-}
-return state
-}
+  if (setCartItems.match(action)) {
+    return {
+      ...state, //pass isCartOpen
+      ...action.Payload,
+    };
+  }
+  if (setIsCartOpen.match(action)) {
+    return {
+      ...state, //pass cartList cartItemCount total
+      isCartOpen: action.Payload, //pass isCartOpen
+    };
+  }
+  return state;
+};
 
 /*   switch (type) {
     case CART_ACTION_TYPES.SET_CART_ITEMS:

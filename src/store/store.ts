@@ -1,9 +1,22 @@
-import { compose, legacy_createStore, applyMiddleware } from "redux";
+import {
+  compose,
+  legacy_createStore,
+  applyMiddleware,
+  Middleware,
+} from "redux";
 import logger from "redux-logger";
 import { rootReducer } from "./rootReducer";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; //Storage Engines: localStorage
 import { thunk } from "redux-thunk";
+
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
+
+export type rootState = ReturnType<typeof rootReducer>;
 
 const persistConfig = {
   key: "root",
@@ -15,7 +28,7 @@ const PersistReducer = persistReducer(persistConfig, rootReducer); // (config, r
 const middlewares = [
   process.env.NODE_ENV !== "production" && logger,
   thunk,
-].filter(Boolean); //catch actions before they hit our reducer and they log out the state
+].filter((middleware): middleware is Middleware => Boolean(middleware)); //catch actions before they hit our reducer and they log out the state
 
 const composeEnhancers =
   (typeof window !== "undefined" &&
