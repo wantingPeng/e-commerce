@@ -46,6 +46,6 @@ export const fetchCategoriesAsync = () => async (dispatch: Dispatch) => {
     const collectionData = await getCollectionAndDocFromDB("categorise");
     dispatch(fetchCategoriesSucess(collectionData));
   } catch (error) {
-    dispatch(fetchCategoriesFailed(error));
+    dispatch(fetchCategoriesFailed(error as Error));
   }
 };

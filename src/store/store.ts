@@ -4,11 +4,13 @@ import {
   applyMiddleware,
   Middleware,
 } from "redux";
-import logger from "redux-logger";
+import Logger from "redux-logger";
 import { rootReducer } from "./rootReducer";
-import { persistStore, persistReducer } from "redux-persist";
+import { persistStore, persistReducer, PersistConfig } from "redux-persist";
 import storage from "redux-persist/lib/storage"; //Storage Engines: localStorage
 import { thunk } from "redux-thunk";
+
+export type RootState = ReturnType<typeof rootReducer>;
 
 declare global {
   interface Window {
@@ -18,15 +20,19 @@ declare global {
 
 export type rootState = ReturnType<typeof rootReducer>;
 
-const persistConfig = {
+type ExtendedPersistConfig = PersistConfig<RootState> & {
+  whitelist: (keyof RootState)[];
+};
+
+const persistConfig: ExtendedPersistConfig = {
   key: "root",
   storage: storage,
-  blacklist: ["user"], // which state, you want to persist or not persist, here the current will betracked by AuthstateLister, so we don't have to persist it, otherweise may cause conflict
+  whitelist: ["cart"], // which state, you want to persist or not persist, here the current will betracked by AuthstateLister, so we don't have to persist it, otherweise may cause conflict
 };
 const PersistReducer = persistReducer(persistConfig, rootReducer); // (config, reducer)  returns an enhanced reducer
 
 const middlewares = [
-  process.env.NODE_ENV !== "production" && logger,
+  process.env.NODE_ENV !== "production" && Logger,
   thunk,
 ].filter((middleware): middleware is Middleware => Boolean(middleware)); //catch actions before they hit our reducer and they log out the state
 

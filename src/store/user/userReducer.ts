@@ -13,6 +13,6 @@ export const userReducer = (
   state = INITIAL_STATE,
   action = {} as UnknownAction
 ) => {
-  if (Action.match(action)) return { ...state, currentUser: action.Payload };
+  if (Action.match(action)) return { ...state, currentUser: action.payload };
   return state;
 };

@@ -5,8 +5,7 @@ export enum CATEGORIES_ACTION_TYPES {
 }
 export type Category = {
   title: string;
-  imageUrl: string;
-
+  id?: number;
   items: CategoryItem[];
 };
 export type CategoryItem = {
@@ -14,4 +13,7 @@ export type CategoryItem = {
   imageUrl: string;
   name: string;
   price: number;
+};
+export type CategoryMap = {
+  [key: string]: CategoryItem[]; // object can have properties the type of it are strings, and the value type of those properties matches the type CategoryItem[].
 };

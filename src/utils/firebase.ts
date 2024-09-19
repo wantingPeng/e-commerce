@@ -22,8 +22,6 @@ import {
   QueryDocumentSnapshot,
 } from "firebase/firestore"; //doc: retrieve documents inside of firestore ,getDoc: get data in document, setDoc: set date in document
 import { Category } from "../store/Categories/CategoriesType";
-import { PromiseOr } from "sass";
-import { promises } from "dns";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB9gN0bAh_DGYxSkJWolxEHZpVkJm1iKws",

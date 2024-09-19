@@ -1,7 +1,7 @@
 import { UnknownAction } from "redux";
 export type ActionWithPayload<T, P> = {
   type: T;
-  Payload: P;
+  payload: P;
 };
 export type Action<T> = {
   type: T;

@@ -17,13 +17,13 @@ export const cartReducer = (state = INITIAL_STATE, action: UnknownAction) => {
   if (setCartItems.match(action)) {
     return {
       ...state, //pass isCartOpen
-      ...action.Payload,
+      cartList: action.payload,
     };
   }
   if (setIsCartOpen.match(action)) {
     return {
       ...state, //pass cartList cartItemCount total
-      isCartOpen: action.Payload, //pass isCartOpen
+      isCartOpen: action.payload, //pass isCartOpen
     };
   }
   return state;
