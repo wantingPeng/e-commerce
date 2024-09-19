@@ -2,7 +2,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import Button from "./Button";
 import { PaymentFormContainer, FormContainer } from "./PaymentForm.style";
 import { StripeCardElement } from "@stripe/stripe-js";
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { selcteCartTotal } from "../store/cart/cartSelector";
 import { SelctorCurrentUser } from "../store/user/selector";
 import { useSelector } from "react-redux";
@@ -13,7 +13,8 @@ const PaymentForm = () => {
   const amount = useSelector(selcteCartTotal);
   const CurrentUser = useSelector(SelctorCurrentUser);
   const [isProcseeingPaymentset, setIsProcseeingPayment] = useState(false);
-  const paymentHandler = async (e) => {
+  const paymentHandler = async (e: FormEvent<HTMLFormElement>) => {
+    //.event type (e.g., FormEvent, ChangeEvent, MouseEvent) followed by the specific HTML element the event is related to.
     e.preventDefault();
     setIsProcseeingPayment(true);
     if (!stripe || !elements) return;
@@ -28,11 +29,23 @@ const PaymentForm = () => {
     const {
       paymentIntent: { client_secret },
     } = response;
+
+    //type guard methode 1:
+    /*  const carddetails=elements.getElement(CardElement)
+    if (carddetails===null)return; */
+
+    //type guard methode 2:
+    const carddetails = elements.getElement(CardElement);
+    const ifValidCardElemet = (
+      card: StripeCardElement | null
+    ): card is StripeCardElement => card !== null;
+    if (!ifValidCardElemet(carddetails)) return;
+
     const paymentResult = await stripe.confirmCardPayment(client_secret, {
       payment_method: {
-        card: elements.getElement(CardElement), //component for securely collecting payment details
+        card: carddetails, //component for securely collecting payment details
         billing_details: {
-          name: CurrentUser ? CurrentUser.displayname : "Guest",
+          name: CurrentUser ? CurrentUser.displayName : "Guest",
         },
       },
     });

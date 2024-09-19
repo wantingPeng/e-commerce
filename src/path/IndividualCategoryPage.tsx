@@ -8,10 +8,15 @@ import {
 } from "../store/Categories/CategoriesSelector";
 import { useSelector } from "react-redux";
 import Spinner from "../component/Spinner";
+
+type CategoryRouteParams = {
+  title: string;
+};
+
 const IndividualCategoryPage = () => {
   const Categories = useSelector(selectCategories);
   const isLoading = useSelector(selectIsLoading);
-  const { title } = useParams();
+  const { title } = useParams() as CategoryRouteParams;
   const [products, setProducts] = useState(Categories[title]); //products's default is {} not undefined
   /*   const products = Categories[title];
    */
