@@ -9,6 +9,9 @@ import { store, persistor } from "./store/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { Elements } from "@stripe/react-stripe-js";
 import { stripePromise } from "./utils/stripe";
+import { TextDecoder, TextEncoder } from "text-encoding";
+window.TextDecoder = TextDecoder;
+window.TextEncoder = TextEncoder;
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>

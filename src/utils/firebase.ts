@@ -1,4 +1,6 @@
 import { initializeApp } from "firebase/app";
+import { TextEncoder, TextDecoder } from "util";
+
 import {
   getAuth,
   signInWithPopup,
@@ -22,7 +24,9 @@ import {
   QueryDocumentSnapshot,
 } from "firebase/firestore"; //doc: retrieve documents inside of firestore ,getDoc: get data in document, setDoc: set date in document
 import { Category } from "../store/Categories/CategoriesType";
-
+global.TextEncoder = TextEncoder;
+// @ts-expect-error
+global.TextDecoder = TextDecoder;
 const firebaseConfig = {
   apiKey: "AIzaSyB9gN0bAh_DGYxSkJWolxEHZpVkJm1iKws",
 

@@ -6,6 +6,7 @@
 				"code": "DE",
 				"name": "Germany"
 			},
+			"postal_code": "90478",
 			"subdivision": {
 				"code": "BY",
 				"name": "Bavaria"
@@ -14,6 +15,6 @@
 			"latitude": 49.4349,
 			"longitude": 11.1046
 		},
-		"timestamp": 1726747651616
+		"timestamp": 1727039543101
 	}
 }
