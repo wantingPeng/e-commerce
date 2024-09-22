@@ -7,7 +7,7 @@ import CheckOut from "./path/CheckOut";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { AuthStateChangedListener } from "./utils/firebase";
-
+import IndividualCategoryPage from "./path/IndividualCategoryPage";
 import { Action } from "./store/user/action";
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +27,7 @@ function App() {
         <Route path="/" element={<Navigation />}>
           <Route index element={<Categories />} />
           <Route path="/shop/*" element={<Shop />} />
+          <Route path="/shop/:title" element={<IndividualCategoryPage />} />
           <Route path="/authentication" element={<Authentication />} />
           <Route path="/checkOut" element={<CheckOut />} />
         </Route>
