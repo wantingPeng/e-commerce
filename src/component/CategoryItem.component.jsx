@@ -12,7 +12,10 @@ const CategoryItem = ({ categories }) => {
           />
           <div className="category__text">
             {/* <h2>{category.title} </h2>  */}
-            <Link className="title" to={`/shop/${category.title}`}>
+            <Link
+              className="title"
+              to={`/shop/${category.title.toLowerCase()}`}
+            >
               {category.title}
             </Link>
 

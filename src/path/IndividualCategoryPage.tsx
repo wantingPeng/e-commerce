@@ -20,10 +20,15 @@ const IndividualCategoryPage = () => {
   const [products, setProducts] = useState(Categories[title]); //products's default is {} not undefined
   /*   const products = Categories[title];
    */
-
+  console.log(title);
   useEffect(() => {
+    console.log("bobobo");
     setProducts(Categories[title]);
   }, [title, Categories]);
+
+  console.log(Categories);
+  console.log(Categories[title]);
+  console.log(products);
 
   return (
     <>
