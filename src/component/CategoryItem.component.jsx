@@ -11,13 +11,8 @@ const CategoryItem = ({ categories }) => {
             style={{ backgroundImage: `url(${category.imageUrl})` }}
           />
           <div className="category__text">
-            {/* <h2>{category.title} </h2>  */}
-            <Link
-              className="title"
-              to={`/shop/${category.title.toLowerCase()}`}
-            >
-              {category.title}
-            </Link>
+            {/*   <Link
+             to={`/shop/${category.title.toLowerCase()}`}></Link> */}
 
             <Link to="/shop">Shop Now</Link>
           </div>

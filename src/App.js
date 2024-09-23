@@ -27,7 +27,8 @@ function App() {
         <Route path="/" element={<Navigation />}>
           <Route index element={<Categories />} />
           <Route path="/shop/*" element={<Shop />} />
-          <Route path="/shop/:title" element={<IndividualCategoryPage />} />
+          {/*           <Route path="/shop/:title" element={<IndividualCategoryPage />} />
+           */}{" "}
           <Route path="/authentication" element={<Authentication />} />
           <Route path="/checkOut" element={<CheckOut />} />
         </Route>
